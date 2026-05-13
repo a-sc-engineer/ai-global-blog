@@ -59,8 +59,20 @@ MIDDLEWARE = [
 # Allow iframe embedding
 X_FRAME_OPTIONS = 'ALLOWALL'
 
-# Allow cross-origin requests from Hugging Face spaces
-CSRF_TRUSTED_ORIGINS = ['https://*.hf.space', 'https://huggingface.co']
+# ✅ FIX: Added direct space URL to trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.hf.space',
+    'https://huggingface.co',
+    'https://adrija-sc-ai-global-blog.hf.space',  # your exact space URL
+]
+
+# ✅ FIX: Required for CSRF cookie to work through HF's proxy
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+
+# ✅ FIX: Required for session/login to persist through HF's proxy
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
 
 ROOT_URLCONF = 'blog_project.urls'
 
@@ -136,6 +148,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = 'post_list'
 LOGOUT_REDIRECT_URL = 'post_list'
 LOGIN_URL = 'login'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

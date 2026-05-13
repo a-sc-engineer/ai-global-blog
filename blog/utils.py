@@ -72,7 +72,7 @@ def generate_cover_image(title):
     
     hf_token = os.environ.get('Hugging_face_api_key')
     if not hf_token:
-        print("No HUGGINGFACE_API_KEY set. Returning placeholder.")
+        print("No Hugging_face_api_key set. Returning placeholder.")
         return fallback_image
         
     if not title:
@@ -148,7 +148,7 @@ def analyze_sentiment(text):
         
     hf_token = os.environ.get('Hugging_face_api_key')
     if not hf_token:
-        print("No HUGGINGFACE_API_KEY set. Defaulting to Neutral.")
+        print("No Hugging_face_api_key set. Defaulting to Neutral.")
         return 'Neutral'
 
     API_URL = "https://router.huggingface.co/hf-inference/models/cardiffnlp/twitter-roberta-base-sentiment-latest"
