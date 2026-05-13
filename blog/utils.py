@@ -70,7 +70,7 @@ def generate_cover_image(title):
     """
     fallback_image = "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1000&auto=format&fit=crop"
     
-    hf_token = os.environ.get('HUGGINGFACE_API_KEY')
+    hf_token = os.environ.get('Hugging_face_api_key')
     if not hf_token:
         print("No HUGGINGFACE_API_KEY set. Returning placeholder.")
         return fallback_image
@@ -146,7 +146,7 @@ def analyze_sentiment(text):
     if not text:
         return 'Neutral'
         
-    hf_token = os.environ.get('HUGGINGFACE_API_KEY')
+    hf_token = os.environ.get('Hugging_face_api_key')
     if not hf_token:
         print("No HUGGINGFACE_API_KEY set. Defaulting to Neutral.")
         return 'Neutral'
