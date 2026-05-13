@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AI Global Blog{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'post_list' %}" class="navbar-brand">AI Global Explorer</a>
+        <div class="navbar-links">
+            <form action="{% url 'post_list' %}" method="GET" class="search-bar">
+                <input type="text" name="q" placeholder="Search posts or countries..." value="{{ request.GET.q }}">
+                <button type="submit" class="btn btn-outline">Search</button>
+            </form>
+            {% if user.is_authenticated %}
+                <a href="{% url 'create_post' %}">Write a Post</a>
+                <span>Hi, {{ user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-primary">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

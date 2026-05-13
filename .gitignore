@@ -1,0 +1,17 @@
+# Python environments
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Environment Variables
+.env
+
+# Database (optional to exclude, but good practice so you don't leak user data)
+db.sqlite3
+
+# Uploaded Media
+media/
+
+# System files
+.DS_Store

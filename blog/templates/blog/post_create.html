@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Post - AI Global Explorer{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 700px; margin: 0 auto;">
+    <h2 style="margin-top: 0;">Write a New Post</h2>
+    
+    <div class="gradient-box">
+        <h4 style="margin: 0 0 0.5rem 0; color: #60a5fa;">✨ Smart AI Image Generation</h4>
+        <p style="margin: 0; font-size: 0.9rem; color: #93c5fd;">
+            When you publish this post, our system will read Wikipedia to learn about your topic, and then feed that knowledge to our AI to generate a breathtaking, highly-accurate cover image!
+        </p>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Post Title</label>
+            <input type="text" name="title" id="title" class="form-control" required placeholder="e.g., Merlion of Singapore">
+            <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">We will use this title to research the topic before generating the AI image.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="country">Focus Country</label>
+            <input type="text" name="country" id="country" class="form-control" required placeholder="e.g., Japan, France, Brazil">
+            <small style="color: var(--text-muted); display: block; margin-top: 0.25rem;">We will fetch details for this country from the restcountries API.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea name="content" id="content" rows="10" class="form-control" required placeholder="Write your amazing post here..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1rem;">
+            Publish Post & Generate Smart AI Image
+        </button>
+    </form>
+</div>
+{% endblock %}

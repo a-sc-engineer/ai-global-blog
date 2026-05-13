@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - AI Global Explorer{% endblock %}
+
+{% block content %}
+{% if post.cover_image_url %}
+    <img src="{{ post.cover_image_url }}" alt="Cover for {{ post.title }}" class="fullscreen-bg">
+{% endif %}
+
+<div class="post-layout">
+    <div class="post-main glass-panel">
+        <div class="post-header">
+            <h1 class="post-title">{{ post.title }}</h1>
+            <div style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
+                <span>👤 {{ post.author.username }}</span>
+                <span>📅 {{ post.created_at|date:"F d, Y" }}</span>
+                
+                <form action="{% url 'toggle_like' post.pk %}" method="POST" style="margin-left: auto;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn {% if user in post.likes.all %}btn-primary{% else %}btn-outline{% endif %}">
+                        ❤️ {{ post.likes.count }} {% if user in post.likes.all %}Liked{% else %}Like{% endif %}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% if post.cover_image_url %}
+            <div style="text-align: right; font-size: 0.85rem; color: var(--primary-hover); margin-top: -1rem; margin-bottom: 2rem;">
+                ✨ Smart AI Image (Generated using Wikipedia Knowledge)
+            </div>
+        {% endif %}
+
+        <div class="post-content">
+            {{ post.content|linebreaks }}
+        </div>
+
+        <div class="comments-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>Comments ({{ comments.count }})</h3>
+                <div style="font-size: 0.85rem; color: var(--text-muted);">
+                    AI Sentiment Overview: 
+                    <span style="color: var(--success); font-weight: bold;">{{ pos_count }} 😊</span> | 
+                    <span style="color: var(--neutral); font-weight: bold;">{{ neu_count }} 😐</span> | 
+                    <span style="color: var(--danger); font-weight: bold;">{{ neg_count }} 😠</span>
+                </div>
+            </div>
+
+            {% if user.is_authenticated %}
+                <div class="card" style="margin-bottom: 2rem;">
+                    <form action="{% url 'add_comment' post.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="content">Add a Comment (AI will analyze sentiment)</label>
+                            <textarea name="content" id="content" rows="3" class="form-control" required placeholder="What are your thoughts?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="card" style="margin-bottom: 2rem; text-align: center;">
+                    <p><a href="{% url 'login' %}">Log in</a> to leave a comment.</p>
+                </div>
+            {% endif %}
+
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">{{ comment.author.username }}</span>
+                        <span style="color: var(--text-muted);">{{ comment.created_at|timesince }} ago</span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        {{ comment.content|linebreaks }}
+                    </div>
+                    <div>
+                        {% if comment.sentiment_label == 'Positive' %}
+                            <span class="sentiment-badge sentiment-positive">AI Labeled: Positive 😊</span>
+                        {% elif comment.sentiment_label == 'Negative' %}
+                            <span class="sentiment-badge sentiment-negative">AI Labeled: Negative 😠</span>
+                        {% else %}
+                            <span class="sentiment-badge sentiment-neutral">AI Labeled: Neutral 😐</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p style="color: var(--text-muted);">No comments yet. Be the first to start the conversation!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="post-sidebar">
+        <div class="country-widget">
+            <h4 style="margin-top: 0; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Focus Country</h4>
+            {% if country_data %}
+                <img src="{{ country_data.flag_url }}" alt="Flag of {{ country_data.name }}" class="country-flag">
+                <h3 style="margin: 0.5rem 0;">{{ country_data.name }}</h3>
+                <div class="country-info">
+                    <p><strong>Capital:</strong> {{ country_data.capital }}</p>
+                    <p><strong>Population:</strong> {{ country_data.population }}</p>
+                    <p><strong>Region:</strong> {{ country_data.region }}</p>
+                </div>
+                <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 1rem;">
+                    Data provided by restcountries.com API
+                </div>
+            {% else %}
+                <p style="color: var(--text-muted);">Country data could not be loaded or "{{ post.country }}" was not found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
