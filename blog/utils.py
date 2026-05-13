@@ -119,18 +119,9 @@ def generate_cover_image(title):
     try:
         response = requests.post(API_URL, headers=hf_headers, json={"inputs": prompt}, timeout=60)
         if response.status_code == 200:
-            import uuid
-            from django.conf import settings
-            
-            filename = f"cover_{uuid.uuid4().hex[:8]}.png"
-            media_dir = os.path.join(settings.BASE_DIR, 'media', 'covers')
-            os.makedirs(media_dir, exist_ok=True)
-            
-            filepath = os.path.join(media_dir, filename)
-            with open(filepath, 'wb') as f:
-                f.write(response.content)
-                
-            return f"{settings.MEDIA_URL}covers/{filename}"
+            import base64
+            image_b64 = base64.b64encode(response.content).decode('utf-8')
+            return f"data:image/png;base64,{image_b64}"
         else:
             print(f"Hugging Face API Error: {response.text}")
     except Exception as e:
