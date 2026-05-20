@@ -9,7 +9,7 @@ app_port: 7860
 
 # AI-Powered Global Blog System
 
-🚀 **[Live Demo → adrija-sc-ai-global-blog.hf.space](https://adrija-sc-ai-global-blog.hf.space)**
+ **[Live Demo → adrija-sc-ai-global-blog.hf.space](https://adrija-sc-ai-global-blog.hf.space)**
 
 A fully functional Django blog system integrated with the `restcountries.com` API and Hugging Face Inference API for powerful AI features.
 
