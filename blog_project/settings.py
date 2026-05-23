@@ -59,18 +59,18 @@ MIDDLEWARE = [
 # Allow iframe embedding
 X_FRAME_OPTIONS = 'ALLOWALL'
 
-# ✅ FIX: Added direct space URL to trusted origins
+# FIX: Added direct space URL to trusted origins
 CSRF_TRUSTED_ORIGINS = [
     'https://*.hf.space',
     'https://huggingface.co',
     'https://adrija-sc-ai-global-blog.hf.space',  # your exact space URL
 ]
 
-# ✅ FIX: Required for CSRF cookie to work through HF's proxy
+# FIX: Required for CSRF cookie to work through HF's proxy
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 
-# ✅ FIX: Required for session/login to persist through HF's proxy
+# FIX: Required for session/login to persist through HF's proxy
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_SAMESITE = 'None'
 
